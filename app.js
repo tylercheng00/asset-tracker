@@ -150,14 +150,14 @@
   }
 
   /* ---------- valuation ---------- */
-  var EXAMPLE = [
-    { type: 'stock', nameKey: 'exampleName1', symbol: '0700.HK', ccy: 'HKD', qty: 200, price: 520, cost: 76000 },
-    { type: 'stock', name: 'Apple', symbol: 'AAPL', ccy: 'USD', qty: 25, price: 268, cost: 4500 },
-    { type: 'fund', nameKey: 'exampleName3', symbol: '2800.HK', ccy: 'HKD', qty: 2000, price: 25.4, cost: 40000 },
-    { type: 'gold', nameKey: 'exampleName4', ccy: 'HKD', qty: 5, unit: 'tael', cost: 120000 },
-    { type: 'silver', nameKey: 'exampleName5', ccy: 'USD', qty: 50, unit: 'oz', cost: 1300 },
-    { type: 'property', nameKey: 'exampleName6', ccy: 'HKD', qty: 1, price: 7200000, cost: 6800000, loan: 3900000 },
-    { type: 'cash', nameKey: 'exampleName7', ccy: 'HKD', qty: 180000 }
+  var EXAMPLE = [   // made-up figures, about HK$63 million in total
+    { type: 'stock', nameKey: 'exampleName1', symbol: '0700.HK', ccy: 'HKD', qty: 8000, price: 400, cost: 2600000 },
+    { type: 'stock', name: 'Apple', symbol: 'AAPL', ccy: 'USD', qty: 3000, price: 350, cost: 600000 },
+    { type: 'fund', nameKey: 'exampleName3', symbol: '2800.HK', ccy: 'HKD', qty: 100000, price: 24, cost: 2100000 },
+    { type: 'gold', nameKey: 'exampleName4', ccy: 'HKD', qty: 200, unit: 'tael', cost: 5600000 },
+    { type: 'silver', nameKey: 'exampleName5', ccy: 'USD', qty: 2000, unit: 'oz', cost: 70000 },
+    { type: 'property', nameKey: 'exampleName6', ccy: 'HKD', qty: 1, price: 32000000, cost: 26000000, loan: 9000000 },
+    { type: 'cash', nameKey: 'exampleName7', ccy: 'HKD', qty: 8500000 }
   ];
   function exampleItems() {
     return EXAMPLE.map(function (x, i) {
@@ -165,7 +165,7 @@
       if (x.nameKey) it.name = t(x.nameKey);
       // examples use live prices where they exist, so the numbers look current
       if ((it.type === 'stock' || it.type === 'fund') && prices.quotes[it.symbol]) delete it.price;
-      if ((it.type === 'gold' || it.type === 'silver') && !prices.quotes[it.type.toUpperCase()]) it.price = it.type === 'gold' ? 37000 : 47;
+      if ((it.type === 'gold' || it.type === 'silver') && !prices.quotes[it.type.toUpperCase()]) it.price = it.type === 'gold' ? 38000 : 52;
       return it;
     });
   }
