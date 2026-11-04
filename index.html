@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>資產簿 Asset Book</title>
+  <meta name="description" content="A free, private tracker for stocks, funds, gold, silver, property and cash. Your holdings stay in your own browser. 免費、私隱的資產記帳工具。">
+  <meta name="theme-color" content="#1f6f5c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f5c'/%3E%3Cpath d='M8 22l5-6 4 3 7-9' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var l = null;
+      try { l = new URLSearchParams(location.search).get('lang') || localStorage.getItem('ab.lang'); } catch (e) {}
+      if (l !== 'en' && l !== 'hant' && l !== 'hans') { var n = navigator.language || ''; l = /^zh-(cn|sg|hans)/i.test(n) ? 'hans' : /^zh/i.test(n) ? 'hant' : 'en'; }
+      document.documentElement.lang = l === 'en' ? 'en' : l === 'hans' ? 'zh-Hans' : 'zh-Hant';
+      document.documentElement.setAttribute('data-lang', l);
+    })();
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="head">
+      <div>
+        <h1 data-t="title"></h1>
+        <p data-t="tagline"></p>
+      </div>
+      <div class="controls">
+        <div class="lang" role="group" aria-label="Language / 語言">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="hant">繁</button>
+          <button type="button" data-lang="hans">简</button>
+        </div>
+        <div class="ctl"><label for="base" data-t="showIn"></label><select id="base"></select></div>
+      </div>
+    </header>
+
+    <p class="prices" id="prices" aria-live="polite"></p>
+
+    <div class="banner" id="banner" hidden>
+      <span data-t="exampleBanner"></span>
+      <button type="button" class="btn sm" id="clearExample" data-t="clearExample"></button>
+    </div>
+
+    <section class="stats" id="stats"></section>
+
+    <div class="two">
+      <section class="panel"><h2 data-t="allocation"></h2><div id="alloc"></div></section>
+      <section class="panel"><h2 data-t="trend"></h2><div id="hist"></div></section>
+    </div>
+
+    <section class="register">
+      <div class="reg-head">
+        <h2 data-t="holdings"></h2>
+        <div class="actions">
+          <button type="button" class="btn primary" id="add" data-t="add"></button>
+          <button type="button" class="btn" id="export" data-t="export"></button>
+          <label class="btn" for="importFile" data-t="import"></label>
+          <input type="file" id="importFile" accept=".json,application/json" hidden>
+          <button type="button" class="btn danger" id="wipe" data-t="wipe"></button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table id="tbl"></table></div>
+      <p class="msg" id="msg" aria-live="polite"></p>
+    </section>
+
+    <section class="about">
+      <div>
+        <h2 data-t="privacyH"></h2>
+        <p data-t="privacyP"></p>
+      </div>
+      <div>
+        <h2 data-t="pricesH"></h2>
+        <p data-t="pricesP"></p>
+      </div>
+      <div>
+        <h2 data-t="disclaimerH"></h2>
+        <p data-t="disclaimerP"></p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span data-t="madeBy"></span>
+      <a href="https://tylercheng00.github.io/" target="_blank" rel="noopener" data-t="madeByLink"></a>
+    </footer>
+  </div>
+
+  <dialog id="dlg">
+    <form class="form" id="form" novalidate>
+      <h3 id="formTitle"></h3>
+      <div class="row">
+        <div class="f"><label for="fType" data-t="fType"></label><select id="fType"></select></div>
+        <div class="f"><label for="fName" data-t="fName"></label><input id="fName" maxlength="80" autocomplete="off"></div>
+      </div>
+      <div class="row">
+        <div class="f" data-show="stock fund"><label for="fSymbol" data-t="fSymbol"></label><input id="fSymbol" maxlength="20" autocomplete="off" list="symbols" placeholder="0700.HK · AAPL"><datalist id="symbols"></datalist></div>
+        <div class="f" data-show="gold silver"><label for="fUnit" data-t="fUnit"></label><select id="fUnit"></select></div>
+        <div class="f"><label for="fCcy" data-t="fCcy"></label><select id="fCcy"></select></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="fQty" id="lQty"></label><input id="fQty" type="number" step="any" min="0" inputmode="decimal"></div>
+        <div class="f" data-hide="cash"><label for="fPrice" id="lPrice"></label><input id="fPrice" type="number" step="any" min="0" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div class="f" data-hide="cash"><label for="fCost" id="lCost"></label><input id="fCost" type="number" step="any" min="0" inputmode="decimal"></div>
+        <div class="f" data-show="property"><label for="fLoan" data-t="fLoan"></label><input id="fLoan" type="number" step="any" min="0" inputmode="decimal"></div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <p class="err" id="formErr" aria-live="polite"></p>
+      <div class="form-act">
+        <button type="submit" class="btn primary" data-t="save"></button>
+        <button type="button" class="btn" id="cancel" data-t="cancel"></button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="ask">
+    <div class="form">
+      <h3 id="askTitle"></h3>
+      <p id="askText" class="hint"></p>
+      <div class="form-act">
+        <button type="button" class="btn primary" id="askYes"></button>
+        <button type="button" class="btn" id="askNo" data-t="cancel"></button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
