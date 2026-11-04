@@ -19,7 +19,7 @@
     title: ['Asset Book', '資產簿', '资产簿'],
     tagline: ['Stocks, funds, gold, silver, property and cash: your net worth on one page.', '股票、基金、黃金、白銀、物業和現金，一頁看清淨資產。', '股票、基金、黄金、白银、房产和现金，一页看清净资产。'],
     showIn: ['Show totals in', '顯示貨幣', '显示货币'],
-    exampleBanner: ['<b>These are example holdings.</b> They disappear as soon as you add your first own holding.', '<b>以下是示例資料。</b>新增第一項你自己的資產後，示例會自動消失。', '<b>以下是示例数据。</b>新增第一项你自己的资产后，示例会自动消失。'],
+    exampleBanner: ['<b>These are made-up example figures, not anyone\'s real holdings.</b> They disappear as soon as you add your first own holding.', '<b>以下是虛構的示例數字，並非任何人的真實資產。</b>新增第一項你自己的資產後，示例會自動消失。', '<b>以下是虚构的示例数字，并非任何人的真实资产。</b>新增第一项你自己的资产后，示例会自动消失。'],
     clearExample: ['Clear the example and start', '清空示例，從零開始', '清空示例，从零开始'],
     allocation: ['Allocation', '資產分佈', '资产分布'],
     trend: ['Net worth over time', '淨資產走勢', '净资产走势'],
